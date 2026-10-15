@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050711">
+<title>NOVA V3 | AI</title>
+
+<style>
+:root {
+  --bg:#050711;
+  --panel:#0b1228;
+  --cyan:#59f3ff;
+  --purple:#a56bff;
+  --white:#f2f7ff;
+  --muted:#9baaca;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  color:var(--white);
+  font-family:Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at top left,#182a55,transparent 45%),
+    radial-gradient(ellipse at bottom right,#381454,transparent 45%),
+    var(--bg);
+}
+header {
+  position:sticky;
+  top:0;
+  padding:18px;
+  background:#050711e8;
+  border-bottom:1px solid #59f3ff44;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo {
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:5px;
+  color:white;
+}
+.logo span { color:var(--cyan); }
+.tag { font-size:10px; color:var(--cyan); }
+main { max-width:950px; margin:auto; padding:25px 14px; }
+.hero { text-align:center; padding:40px 5px; }
+.hero h1 {
+  font-size:clamp(55px,14vw,100px);
+  margin:15px 0;
+  letter-spacing:-5px;
+  background:linear-gradient(90deg,white,var(--cyan),var(--purple));
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:glow 3s infinite alternate;
+}
+@keyframes glow {
+  from { filter:drop-shadow(0 0 3px #59f3ff); }
+  to { filter:drop-shadow(0 0 18px #a56bff); }
+}
+.hero p { color:var(--muted); line-height:1.7; }
+.layout {
+  display:grid;
+  grid-template-columns:0.8fr 1.2fr;
+  gap:15px;
+}
+.panel {
+  background:linear-gradient(145deg,#111b38,#080c1c);
+  border:1px solid #59f3ff44;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 0 25px #59f3ff0b;
+}
+.panel h2 {
+  font-size:14px;
+  letter-spacing:2px;
+  margin:0;
+}
+.panel-head {
+  padding:16px;
+  border-bottom:1px solid #59f3ff33;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+}
+.settings { padding:16px; }
+label { display:block; color:var(--muted); font-size:13px; margin-bottom:8px; }
+input,textarea {
+  width:100%;
+  padding:12px;
+  background:#050914;
+  color:white;
+  border:1px solid #59f3ff55;
+  border-radius:8px;
+  font:inherit;
+}
+button {
+  padding:12px 14px;
+  border:1px solid var(--cyan);
+  border-radius:8px;
+  background:linear-gradient(100deg,#5747ef,#248fdf);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:disabled { opacity:.5; }
+.full { width:100%; }
+.hint,.fine {
+  font-size:12px;
+  line-height:1.6;
+  color:var(--muted);
+}
+.chat { display:flex; flex-direction:column; min-height:500px; }
+.messages {
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  flex:1;
+  min-height:300px;
+  max-height:500px;
+  overflow-y:auto;
+}
+.msg {
+  padding:12px;
+  border:1px solid #59f3ff33;
+  background:#0c1830;
+  border-radius:0 12px 12px 12px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.6;
+  font-size:14px;
+}
+.msg.user {
+  align-self:flex-end;
+  background:#21163a;
+  border-color:#a56bff66;
+  border-radius:12px 0 12px 12px;
+}
+.who {
+  display:block;
+  color:var(--cyan);
+  font-size:10px;
+  letter-spacing:2px;
+  margin-bottom:6px;
+}
+.user .who { color:#c9a9ff; }
+.compose { padding:14px; border-top:1px solid #59f3ff33; }
+.compose textarea { resize:vertical; min-height:75px; }
+.row { display:flex; gap:8px; align-items:center; }
+.row button { flex-shrink:0; }
+.file-name { font-size:11px; color:var(--muted); overflow-wrap:anywhere; }
+.status { color:#75ffbd; font-size:11px; }
+footer { text-align:center; padding:25px; color:#7182a4; font-size:10px; letter-spacing:2px; }
+@media(max-width:650px) {
+  .layout { grid-template-columns:1fr; }
+  .hero { padding:25px 4px; }
+  .chat { min-height:450px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">N<span>O</span>VA_</div>
+  <div class="tag">NEON PROTOCOL // V3</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="tag">✦ GEMINI NEURAL LINK</div>
+    <h1>NOVA AI</h1>
+    <p>Yeni nesil yapay zekâ deneyimi.<br>
+    Sorunu yaz, dosyanı ekle ve NOVA ile konuş.</p>
+  </section>
+
+  <div class="layout">
+    <aside class="panel">
+      <div class="panel-head">
+        <h2>SİSTEM AYARLARI</h2>
+        <span class="status" id="status">● HAZIR</span>
+      </div>
+      <div class="settings">
+        <label for="endpoint">Güvenli Worker adresin</label>
+        <input id="endpoint" type="url"
+          placeholder="https://projen.workers.dev">
+        <p class="hint">
+          Gerçek Gemini bağlantısı için Cloudflare Worker adresini gir.
+          API anahtarını buraya yazma.
+        </p>
+        <button class="full" id="save">ADRESİ KULLAN</button>
+        <hr style="border:0;border-top:1px solid #59f3ff33;margin:22px 0">
+        <div class="tag">DOSYA DESTEĞİ</div>
+        <p class="fine">
+          TXT, MD, CSV, JSON, PDF ve PNG/JPG/WEBP dosyaları.
+          En fazla 7 MB. Dosyaları yalnızca güvendiğin bir sunucuya gönder.
+        </p>
+      </div>
+    </aside>
+
+    <section class="panel chat">
+      <div class="panel-head">
+        <h2>NOVA ASİSTAN</h2>
+        <span class="tag">ONLINE UI</span>
+      </div>
+
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="msg">
+          <span class="who">NOVA AI</span>
+          Merhaba! Ben NOVA. Önce Worker adresini ayarla,
+          sonra bana sorular sorabilirsin.
+        </div>
+      </div>
+
+      <form class="compose" id="form">
+        <label for="file">Dosya ekle (isteğe bağlı)</label>
+        <input id="file" type="file"
+          accept=".txt,.md,.csv,.json,.pdf,image/png,image/jpeg,image/webp">
+        <p class="file-name" id="filename">Dosya seçilmedi</p>
+        <textarea id="prompt" maxlength="8000"
+          placeholder="NOVA'ya bir soru sor..." required></textarea>
+        <div class="row" style="margin-top:10px">
+          <button type="submit" id="send">GÖNDER ↗</button>
+          <button type="button" id="clear"
+            style="background:#091126;color:#59f3ff">
+            TEMİZLE
+          </button>
+        </div>
+        <p class="fine">NOVA V3 • Gemini bağlantısı gerektirir.</p>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer>NOVA V3 · NEON AI SYSTEM</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let history = [];
+let selectedFile = null;
+
+$("save").addEventListener("click", () => {
+  const value = $("endpoint").value.trim().replace(/\/+$/, "");
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") throw new Error();
+
+    $("endpoint").value = value;
+    $("status").textContent = "● ADRES HAZIR";
+  } catch {
+    $("status").textContent = "GEÇERLİ HTTPS ADRESİ GİR";
+  }
+});
+
+$("file").addEventListener("change", () => {
+  selectedFile = $("file").files[0] || null;
+
+  if (selectedFile && selectedFile.size > 7 * 1024 * 1024) {
+    alert("Dosya en fazla 7 MB olabilir.");
+    $("file").value = "";
+    selectedFile = null;
+  }
+
+  $("filename").textContent =
+    selectedFile ? selectedFile.name : "Dosya seçilmedi";
+});
+
+$("clear").addEventListener("click", () => {
+  $("messages").replaceChildren();
+  history = [];
+});
+
+function addMessage(text, role) {
+  const box = document.createElement("div");
+  box.className = "msg" + (role === "user" ? " user" : "");
+
+  const label = document.createElement("span");
+  label.className = "who";
+  label.textContent = role === "user" ? "SEN" : "NOVA AI";
+
+  box.append(label, document.createTextNode(text));
+  $("messages").appendChild(box);
+  $("messages").scrollTop = $("messages").scrollHeight;
+  return box;
+}
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const result = String(reader.result);
+      resolve({
+        name: file.name,
+        mimeType: file.type || "application/octet-stream",
+        data: result.split(",")[1]
+      });
+    };
+
+    reader.onerror = () => reject(new Error("Dosya okunamadı."));
+    reader.readAsDataURL(file);
+  });
+}
+
+$("form").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const question = $("prompt").value.trim();
+  const endpoint = $("endpoint").value.trim().replace(/\/+$/, "");
+
+  if (!question) return;
+
+  if (!endpoint) {
+    $("status").textContent = "ÖNCE WORKER ADRESİNİ GİR";
+    return;
+  }
+
+  if (selectedFile && selectedFile.size > 7 * 1024 * 1024) {
+    alert("Dosya en fazla 7 MB olabilir.");
+    return;
+  }
+
+  $("send").disabled = true;
+  addMessage(question, "user");
+  $("prompt").value = "";
+
+  const waiting = addMessage("Gemini yanıtı bekleniyor...", "bot");
+  $("status").textContent = "● BAĞLANIYOR";
+
+  try {
+    const payload = {
+      message: question,
+      history: history.slice(-12)
+    };
+
+    if (selectedFile) {
+      payload.file = await readFile(selectedFile);
+    }
+
+    const response = await fetch(endpoint + "/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Sunucu hatası: " + response.status);
+    }
+
+    if (!data.reply) throw new Error("Yanıt alınamadı.");
+
+    waiting.replaceChildren();
+    const label = document.createElement("span");
+    label.className = "who";
+    label.textContent = "NOVA AI";
+    waiting.append(label, document.createTextNode(data.reply));
+
+    history.push(
+      { role: "user", text: question },
+      { role: "model", text: data.reply }
+    );
+
+    history = history.slice(-12);
+    $("status").textContent = "● YANIT HAZIR";
+
+    if (selectedFile) {
+      $("file").value = "";
+      selectedFile = null;
+      $("filename").textContent = "Dosya seçilmedi";
+    }
+
+  } catch (error) {
+    waiting.replaceChildren();
+    const label = document.createElement("span");
+    label.className = "who";
+    label.textContent = "BAĞLANTI HATASI";
+    waiting.append(label, document.createTextNode(
+      error.message + " Worker adresini ve sunucu ayarlarını kontrol et."
+    ));
+    $("status").textContent = "● HATA";
+  } finally {
+    $("send").disabled = false;
+    $("messages").scrollTop = $("messages").scrollHeight;
+  }
+});
+</script>
+</body>
+  </html>
+
